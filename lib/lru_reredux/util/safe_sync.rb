@@ -21,6 +21,12 @@ module LruReredux
         end
       end
 
+      def getset_ignores_nil=(getset_ignores_nil)
+        synchronize do
+          super(getset_ignores_nil)
+        end
+      end
+
       def getset(key)
         synchronize do
           super(key)

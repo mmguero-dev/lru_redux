@@ -3,7 +3,8 @@ module LruReredux
     class Cache
       attr_reader :max_size, :ttl, :getset_ignores_nil
 
-      def initialize(max_size = 2048, ttl = :none, getset_ignores_nil = false)
+      def initialize(*args)
+        max_size, ttl, getset_ignores_nil = args
 
         ttl ||= :none
         getset_ignores_nil = false if getset_ignores_nil.nil?
