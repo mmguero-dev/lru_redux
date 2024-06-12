@@ -1,5 +1,5 @@
 # LruReredux [![Gem Version](https://badge.fury.io/rb/lru_reredux.svg)](http://badge.fury.io/rb/lru_reredux)
-An efficient, thread safe LRU cache.
+An efficient, thread safe LRU cache. Forked from [LruRedux](https://github.com/SamSaffron/lru_redux) which was last updated in 2017.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -23,10 +23,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install lru_reredux
-
-Ruby 1.8 - v0.8.4 is the last compatible release:
-
-    gem 'lru_reredux', '~> 0.8.4'
 
 ## Usage
 
@@ -168,36 +164,16 @@ Rehearsal -------------------------------------------------------------
 ThreadSafeLru               4.500000   0.030000   4.530000 (  4.524213)
 LRU                         2.250000   0.000000   2.250000 (  2.249670)
 LRUCache                    1.720000   0.010000   1.730000 (  1.728243)
-LruReredux::Cache             0.960000   0.000000   0.960000 (  0.961292)
-LruReredux::ThreadSafeCache   2.180000   0.000000   2.180000 (  2.187714)
+LruReredux::Cache           0.960000   0.000000   0.960000 (  0.961292)
+LruReredux::ThreadSafeCache 2.180000   0.000000   2.180000 (  2.187714)
 --------------------------------------------------- total: 11.650000sec
 
                                 user     system      total        real
 ThreadSafeLru               4.390000   0.020000   4.410000 (  4.415703)
 LRU                         2.140000   0.010000   2.150000 (  2.149626)
 LRUCache                    1.680000   0.010000   1.690000 (  1.688564)
-LruReredux::Cache             0.910000   0.000000   0.910000 (  0.913108)
-LruReredux::ThreadSafeCache   2.200000   0.010000   2.210000 (  2.212108)
-```
-
-##### Ruby 2.0.0-p643
-Implementation is slightly different for Ruby versions before 2.1 due to a Ruby bug. http://bugs.ruby-lang.org/issues/8312
-```
-$ ruby ./bench/bench.rb
-Rehearsal -------------------------------------------------------------
-ThreadSafeLru               4.790000   0.040000   4.830000 (  4.828370)
-LRU                         2.170000   0.010000   2.180000 (  2.180630)
-LRUCache                    1.810000   0.000000   1.810000 (  1.814737)
-LruReredux::Cache             1.330000   0.010000   1.340000 (  1.325554)
-LruReredux::ThreadSafeCache   2.770000   0.000000   2.770000 (  2.777754)
---------------------------------------------------- total: 12.930000sec
-
-                                user     system      total        real
-ThreadSafeLru               4.710000   0.060000   4.770000 (  4.773233)
-LRU                         2.120000   0.010000   2.130000 (  2.135111)
-LRUCache                    1.780000   0.000000   1.780000 (  1.781392)
-LruReredux::Cache             1.190000   0.010000   1.200000 (  1.201908)
-LruReredux::ThreadSafeCache   2.650000   0.010000   2.660000 (  2.652580)
+LruReredux::Cache           0.910000   0.000000   0.910000 (  0.913108)
+LruReredux::ThreadSafeCache 2.200000   0.010000   2.210000 (  2.212108)
 ```
 
 #### TTL
@@ -206,20 +182,24 @@ LruReredux::ThreadSafeCache   2.650000   0.010000   2.660000 (  2.652580)
 $ ruby ./bench/bench_ttl.rb
 Rehearsal -----------------------------------------------------------------------
 FastCache                             6.240000   0.070000   6.310000 (  6.302569)
-LruReredux::TTL::Cache                  4.700000   0.010000   4.710000 (  4.712858)
-LruReredux::TTL::ThreadSafeCache        6.300000   0.010000   6.310000 (  6.319032)
-LruReredux::TTL::Cache (TTL disabled)   2.460000   0.010000   2.470000 (  2.470629)
+LruReredux::TTL::Cache                4.700000   0.010000   4.710000 (  4.712858)
+LruReredux::TTL::ThreadSafeCache      6.300000   0.010000   6.310000 (  6.319032)
+LruReredux::TTL::Cache (TTL disabled) 2.460000   0.010000   2.470000 (  2.470629)
 ------------------------------------------------------------- total: 19.800000sec
 
                                           user     system      total        real
 FastCache                             6.470000   0.070000   6.540000 (  6.536193)
-LruReredux::TTL::Cache                  4.640000   0.010000   4.650000 (  4.661793)
-LruReredux::TTL::ThreadSafeCache        6.310000   0.020000   6.330000 (  6.328840)
-LruReredux::TTL::Cache (TTL disabled)   2.440000   0.000000   2.440000 (  2.446269)
+LruReredux::TTL::Cache                4.640000   0.010000   4.650000 (  4.661793)
+LruReredux::TTL::ThreadSafeCache      6.310000   0.020000   6.330000 (  6.328840)
+LruReredux::TTL::Cache (TTL disabled) 2.440000   0.000000   2.440000 (  2.446269)
 ```
 
 ## Other Caches
 This is a list of the caches that are used in the benchmarks.
+
+#### LruRedux (from which LruReredux is forked)
+- RubyGems: https://rubygems.org/gems/lru_redux
+- Homepage: https://github.com/SamSaffron/lru_redux
 
 #### LRU
 - RubyGems: https://rubygems.org/gems/lru
@@ -249,47 +229,6 @@ This is a list of the caches that are used in the benchmarks.
 ## Changelog
 ### version 1.2.0 - 12-Jun-2024
 
-- New: Added getset_ignores_nil argument to initialize arguments for non-legacy cache. If true, blocks called by getset yielding nil values will be returned but not stored in the cache.
+- New: Added getset_ignores_nil argument to cache initialize arguments. If true, blocks called by getset yielding nil values will be returned but not stored in the cache. Ruby >= 2.1.0 is required for LruReredux.
 
-### version 1.1.0 - 30-Mar-2015
-
-- New: TTL cache added.  This cache is LRU like with the addition of time-based eviction.  Check the Usage -> TTL Cache section in README.md for details.
-
-### version 1.0.0 - 26-Mar-2015
-
-- Ruby Support: Ruby 1.9+ is now required by LruReredux.  If you need to use LruReredux in Ruby 1.8, please specify gem version 0.8.4 in your Gemfile.  v0.8.4 is the last 1.8 compatible release and included a number of fixes and performance improvements for the Ruby 1.8 implementation. @Seberius
-- Perf: improve performance in Ruby 2.1+ on the MRI @Seberius
-
-### version 0.8.4 - 20-Feb-2015
-
-- Fix: regression of ThreadSafeCache under JRuby 1.7 @Seberius
-
-### version 0.8.3 - 20-Feb-2015
-
-- Perf: improve ThreadSafeCache performance @Seberius
-
-### version 0.8.2 - 16-Feb-2015
-
-- Perf: use #size instead of #count when checking length @Seberius
-- Fix: Cache could grow beyond its size in Ruby 1.8 @Seberius
-- Fix: #each could deadlock in Ruby 1.8 @Seberius
-
-
-### version 0.8.1 - 7-Sep-2013
-
-- Fix #each implementation
-- Fix deadlocks with ThreadSafeCache
-- Version jump is because its been used in production for quite a while now
-
-### version 0.0.6 - 24-April-2013
-
-- Fix bug in getset, overflow was not returning the yeilded val
-
-### version 0.0.5 - 23-April-2013
-
-- Added getset and fetch
-- Optimised implementation so it 20-30% faster on Ruby 1.9+
-
-### version 0.0.4 - 23-April-2013
-
-- Initial version
+See [LruRedux](https://github.com/SamSaffron/lru_redux) for changes made prior to the creation of this fork.
