@@ -1,13 +1,20 @@
 # Ruby 1.9 makes our life easier, Hash is already ordered
 #
-# This is an ultra efficient 1.9 freindly implementation
+# This is an ultra efficient 1.9 friendly implementation
 class LruRedux::Cache
-  def initialize(*args)
-    max_size, _ = args
+  attr_reader :max_size, :getset_ignores_nil
 
-    raise ArgumentError.new(:max_size) if max_size < 1
+  def initialize(max_size = 2048, getset_ignores_nil = false)
+
+    getset_ignores_nil = false if getset_ignores_nil.nil?
+
+    raise ArgumentError.new(:max_size) if
+        max_size < 1
+    raise ArgumentError.new(:getset_ignores_nil) unless
+        [true, false].include?(getset_ignores_nil)
 
     @max_size = max_size
+    @getset_ignores_nil = getset_ignores_nil
     @data = {}
   end
 
@@ -25,14 +32,26 @@ class LruRedux::Cache
     nil
   end
 
+  def getset_ignores_nil=(getset_ignores_nil)
+    getset_ignores_nil ||= @getset_ignores_nil
+
+    raise ArgumentError.new(:getset_ignores_nil) unless
+        [true, false].include?(getset_ignores_nil)
+
+    @getset_ignores_nil = getset_ignores_nil
+  end
+
   def getset(key)
     found = true
     value = @data.delete(key){ found = false }
     if found
       @data[key] = value
     else
-      result = @data[key] = yield
-      @data.shift if @data.length > @max_size
+      result = yield
+      if !result.nil? || !@getset_ignores_nil
+        @data[key] = result
+        @data.shift if @data.length > @max_size
+      end
       result
     end
   end

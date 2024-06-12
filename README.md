@@ -247,6 +247,10 @@ This is a list of the caches that are used in the benchmarks.
 5. Create new Pull Request
 
 ## Changelog
+### version 1.2.0 - 12-Jun-2024
+
+- New: Added getset_ignores_nil argument to initialize arguments for non-legacy cache. If true, blocks called by getset yielding nil values will be returned but not stored in the cache.
+
 ### version 1.1.0 - 30-Mar-2015
 
 - New: TTL cache added.  This cache is LRU like with the addition of time-based eviction.  Check the Usage -> TTL Cache section in README.md for details.

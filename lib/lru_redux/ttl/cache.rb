@@ -1,20 +1,23 @@
 module LruRedux
   module TTL
     class Cache
-      attr_reader :max_size, :ttl
+      attr_reader :max_size, :ttl, :getset_ignores_nil
 
-      def initialize(*args)
-        max_size, ttl = args
+      def initialize(max_size = 2048, ttl = :none, getset_ignores_nil = false)
 
         ttl ||= :none
+        getset_ignores_nil = false if getset_ignores_nil.nil?
 
         raise ArgumentError.new(:max_size) if
             max_size < 1
         raise ArgumentError.new(:ttl) unless
             ttl == :none || ((ttl.is_a? Numeric) && ttl >= 0)
+        raise ArgumentError.new(:getset_ignores_nil) unless
+            [true, false].include?(getset_ignores_nil)
 
         @max_size = max_size
         @ttl = ttl
+        @getset_ignores_nil = getset_ignores_nil
         @data_lru = {}
         @data_ttl = {}
       end
@@ -41,6 +44,15 @@ module LruRedux
         ttl_evict
       end
 
+      def getset_ignores_nil=(getset_ignores_nil)
+        getset_ignores_nil ||= @getset_ignores_nil
+
+        raise ArgumentError.new(:getset_ignores_nil) unless
+            [true, false].include?(getset_ignores_nil)
+
+        @getset_ignores_nil = getset_ignores_nil
+      end
+
       def getset(key)
         ttl_evict
 
@@ -49,14 +61,17 @@ module LruRedux
         if found
           @data_lru[key] = value
         else
-          result = @data_lru[key] = yield
-          @data_ttl[key] = Time.now.to_f
+          result = yield
+          if !result.nil? || !@getset_ignores_nil
+            @data_lru[key] = result
+            @data_ttl[key] = Time.now.to_f
 
-          if @data_lru.size > @max_size
-            key, _ = @data_lru.first
+            if @data_lru.size > @max_size
+              key, _ = @data_lru.first
 
-            @data_ttl.delete(key)
-            @data_lru.delete(key)
+              @data_ttl.delete(key)
+              @data_lru.delete(key)
+            end
           end
 
           result
