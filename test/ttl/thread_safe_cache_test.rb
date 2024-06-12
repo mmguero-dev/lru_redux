@@ -3,7 +3,7 @@ require './test/ttl/cache_test'
 class TTLThreadSafeCacheTest < TTLCacheTest
   def setup
     Timecop.freeze(Time.now)
-    @c = LruRedux::TTL::ThreadSafeCache.new 3, 5 * 60
+    @c = LruReredux::TTL::ThreadSafeCache.new 3, 5 * 60
   end
 
   def test_recursion

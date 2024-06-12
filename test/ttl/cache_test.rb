@@ -4,7 +4,7 @@ require './test/cache_test'
 class TTLCacheTest < CacheTest
   def setup
     Timecop.freeze(Time.now)
-    @c = LruRedux::TTL::Cache.new 3, 5 * 60
+    @c = LruReredux::TTL::Cache.new 3, 5 * 60
   end
 
   def teardown

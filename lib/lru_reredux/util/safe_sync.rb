@@ -1,6 +1,6 @@
 require 'monitor'
 
-module LruRedux
+module LruReredux
   module Util
     module SafeSync
       include MonitorMixin

@@ -1,7 +1,7 @@
 # Ruby 1.9 makes our life easier, Hash is already ordered
 #
 # This is an ultra efficient 1.9 friendly implementation
-class LruRedux::Cache
+class LruReredux::Cache
   attr_reader :max_size, :getset_ignores_nil
 
   def initialize(max_size = 2048, getset_ignores_nil = false)

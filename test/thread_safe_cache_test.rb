@@ -2,7 +2,7 @@ require './test/cache_test'
 
 class ThreadSafeCacheTest < CacheTest
   def setup
-    @c = LruRedux::ThreadSafeCache.new(3)
+    @c = LruReredux::ThreadSafeCache.new(3)
   end
 
   def test_recursion

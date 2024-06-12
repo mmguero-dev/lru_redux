@@ -1,4 +1,4 @@
-module LruRedux
+module LruReredux
   module TTL
     class Cache
       attr_reader :max_size, :ttl, :getset_ignores_nil

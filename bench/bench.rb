@@ -15,9 +15,9 @@ lru_cache = LRUCache.new(1_000)
 # ThreadSafeLru
 thread_safe_lru = ThreadSafeLru::LruCache.new(1_000)
 
-# LruRedux
-redux = LruRedux::Cache.new(1_000)
-redux_thread_safe = LruRedux::ThreadSafeCache.new(1_000)
+# LruReredux
+redux = LruReredux::Cache.new(1_000)
+redux_thread_safe = LruReredux::ThreadSafeCache.new(1_000)
 
 puts "** LRU Benchmarks **"
 Benchmark.bmbm do |bm|
@@ -33,11 +33,11 @@ Benchmark.bmbm do |bm|
     1_000_000.times { lru_cache[rand(2_000)] ||= :value }
   end
 
-  bm.report 'LruRedux::Cache' do
+  bm.report 'LruReredux::Cache' do
     1_000_000.times { redux.getset(rand(2_000)) { :value } }
   end
 
-  bm.report 'LruRedux::ThreadSafeCache' do
+  bm.report 'LruReredux::ThreadSafeCache' do
     1_000_000.times { redux_thread_safe.getset(rand(2_000)) { :value } }
   end
 end

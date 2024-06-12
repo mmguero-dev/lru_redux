@@ -1,7 +1,7 @@
 # Ruby 1.9 makes our life easier, Hash is already ordered
 #
 # This is an ultra efficient 1.9 friendly implementation
-class LruRedux::Cache
+class LruReredux::Cache
   def max_size=(size)
     raise ArgumentError.new(:max_size) if @max_size < 1
     @max_size = size

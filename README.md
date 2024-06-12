@@ -1,4 +1,4 @@
-# LruRedux [![Gem Version](https://badge.fury.io/rb/lru_redux.svg)](http://badge.fury.io/rb/lru_redux)
+# LruReredux [![Gem Version](https://badge.fury.io/rb/lru_reredux.svg)](http://badge.fury.io/rb/lru_reredux)
 An efficient, thread safe LRU cache.
 
 - [Installation](#installation)
@@ -14,7 +14,7 @@ An efficient, thread safe LRU cache.
 
 Add this line to your application's Gemfile:
 
-    gem 'lru_redux'
+    gem 'lru_reredux'
 
 And then execute:
 
@@ -22,19 +22,19 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install lru_redux
+    $ gem install lru_reredux
 
 Ruby 1.8 - v0.8.4 is the last compatible release:
 
-    gem 'lru_redux', '~> 0.8.4'
+    gem 'lru_reredux', '~> 0.8.4'
 
 ## Usage
 
 ```ruby
-require 'lru_redux'
+require 'lru_reredux'
 
 # non thread safe
-cache = LruRedux::Cache.new(100)
+cache = LruReredux::Cache.new(100)
 cache[:a] = "1"
 cache[:b] = "2"
 
@@ -65,7 +65,7 @@ cache.to_a
 
 # for thread safe access, all methods on cache
 # are protected with a mutex
-cache = LruRedux::ThreadSafeCache.new(100)
+cache = LruReredux::ThreadSafeCache.new(100)
 
 ```
 
@@ -75,13 +75,13 @@ The TTL cache extends the functionality of the LRU cache with a Time To Live evi
 ```ruby
 # Timecop is gem that allows us to change Time.now
 # and is used for demonstration purposes.
-require 'lru_redux'
+require 'lru_reredux'
 require 'timecop'
 
 # Create a TTL cache with a size of 100 and TTL of 5 minutes.
 # The first argument is the size and
 # the second optional argument is the TTL in seconds.
-cache = LruRedux::TTL::Cache.new(100, 5 * 60)
+cache = LruReredux::TTL::Cache.new(100, 5 * 60)
 
 Timecop.freeze(Time.now)
 
@@ -125,13 +125,13 @@ Timecop.return
 # The behavior of a TTL cache with the TTL set to `:none`
 # is identical to the LRU cache.
 
-cache = LruRedux::TTL::Cache.new(100, :none)
+cache = LruReredux::TTL::Cache.new(100, :none)
 
 # The TTL argument is optional and defaults to `:none`.
-cache = LruRedux::TTL::Cache.new(100)
+cache = LruReredux::TTL::Cache.new(100)
 
 # A thread safe version is available.
-cache = LruRedux::TTL::ThreadSafeCache.new(100, 5 * 60)
+cache = LruReredux::TTL::ThreadSafeCache.new(100, 5 * 60)
 ```
 
 ## Cache Methods
@@ -168,16 +168,16 @@ Rehearsal -------------------------------------------------------------
 ThreadSafeLru               4.500000   0.030000   4.530000 (  4.524213)
 LRU                         2.250000   0.000000   2.250000 (  2.249670)
 LRUCache                    1.720000   0.010000   1.730000 (  1.728243)
-LruRedux::Cache             0.960000   0.000000   0.960000 (  0.961292)
-LruRedux::ThreadSafeCache   2.180000   0.000000   2.180000 (  2.187714)
+LruReredux::Cache             0.960000   0.000000   0.960000 (  0.961292)
+LruReredux::ThreadSafeCache   2.180000   0.000000   2.180000 (  2.187714)
 --------------------------------------------------- total: 11.650000sec
 
                                 user     system      total        real
 ThreadSafeLru               4.390000   0.020000   4.410000 (  4.415703)
 LRU                         2.140000   0.010000   2.150000 (  2.149626)
 LRUCache                    1.680000   0.010000   1.690000 (  1.688564)
-LruRedux::Cache             0.910000   0.000000   0.910000 (  0.913108)
-LruRedux::ThreadSafeCache   2.200000   0.010000   2.210000 (  2.212108)
+LruReredux::Cache             0.910000   0.000000   0.910000 (  0.913108)
+LruReredux::ThreadSafeCache   2.200000   0.010000   2.210000 (  2.212108)
 ```
 
 ##### Ruby 2.0.0-p643
@@ -188,16 +188,16 @@ Rehearsal -------------------------------------------------------------
 ThreadSafeLru               4.790000   0.040000   4.830000 (  4.828370)
 LRU                         2.170000   0.010000   2.180000 (  2.180630)
 LRUCache                    1.810000   0.000000   1.810000 (  1.814737)
-LruRedux::Cache             1.330000   0.010000   1.340000 (  1.325554)
-LruRedux::ThreadSafeCache   2.770000   0.000000   2.770000 (  2.777754)
+LruReredux::Cache             1.330000   0.010000   1.340000 (  1.325554)
+LruReredux::ThreadSafeCache   2.770000   0.000000   2.770000 (  2.777754)
 --------------------------------------------------- total: 12.930000sec
 
                                 user     system      total        real
 ThreadSafeLru               4.710000   0.060000   4.770000 (  4.773233)
 LRU                         2.120000   0.010000   2.130000 (  2.135111)
 LRUCache                    1.780000   0.000000   1.780000 (  1.781392)
-LruRedux::Cache             1.190000   0.010000   1.200000 (  1.201908)
-LruRedux::ThreadSafeCache   2.650000   0.010000   2.660000 (  2.652580)
+LruReredux::Cache             1.190000   0.010000   1.200000 (  1.201908)
+LruReredux::ThreadSafeCache   2.650000   0.010000   2.660000 (  2.652580)
 ```
 
 #### TTL
@@ -206,16 +206,16 @@ LruRedux::ThreadSafeCache   2.650000   0.010000   2.660000 (  2.652580)
 $ ruby ./bench/bench_ttl.rb
 Rehearsal -----------------------------------------------------------------------
 FastCache                             6.240000   0.070000   6.310000 (  6.302569)
-LruRedux::TTL::Cache                  4.700000   0.010000   4.710000 (  4.712858)
-LruRedux::TTL::ThreadSafeCache        6.300000   0.010000   6.310000 (  6.319032)
-LruRedux::TTL::Cache (TTL disabled)   2.460000   0.010000   2.470000 (  2.470629)
+LruReredux::TTL::Cache                  4.700000   0.010000   4.710000 (  4.712858)
+LruReredux::TTL::ThreadSafeCache        6.300000   0.010000   6.310000 (  6.319032)
+LruReredux::TTL::Cache (TTL disabled)   2.460000   0.010000   2.470000 (  2.470629)
 ------------------------------------------------------------- total: 19.800000sec
 
                                           user     system      total        real
 FastCache                             6.470000   0.070000   6.540000 (  6.536193)
-LruRedux::TTL::Cache                  4.640000   0.010000   4.650000 (  4.661793)
-LruRedux::TTL::ThreadSafeCache        6.310000   0.020000   6.330000 (  6.328840)
-LruRedux::TTL::Cache (TTL disabled)   2.440000   0.000000   2.440000 (  2.446269)
+LruReredux::TTL::Cache                  4.640000   0.010000   4.650000 (  4.661793)
+LruReredux::TTL::ThreadSafeCache        6.310000   0.020000   6.330000 (  6.328840)
+LruReredux::TTL::Cache (TTL disabled)   2.440000   0.000000   2.440000 (  2.446269)
 ```
 
 ## Other Caches
@@ -257,7 +257,7 @@ This is a list of the caches that are used in the benchmarks.
 
 ### version 1.0.0 - 26-Mar-2015
 
-- Ruby Support: Ruby 1.9+ is now required by LruRedux.  If you need to use LruRedux in Ruby 1.8, please specify gem version 0.8.4 in your Gemfile.  v0.8.4 is the last 1.8 compatible release and included a number of fixes and performance improvements for the Ruby 1.8 implementation. @Seberius
+- Ruby Support: Ruby 1.9+ is now required by LruReredux.  If you need to use LruReredux in Ruby 1.8, please specify gem version 0.8.4 in your Gemfile.  v0.8.4 is the last 1.8 compatible release and included a number of fixes and performance improvements for the Ruby 1.8 implementation. @Seberius
 - Perf: improve performance in Ruby 2.1+ on the MRI @Seberius
 
 ### version 0.8.4 - 20-Feb-2015

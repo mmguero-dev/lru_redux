@@ -1,4 +1,4 @@
-module LruRedux
+module LruReredux
   module Util
     module SafeSync
       def getset(key, &block)
